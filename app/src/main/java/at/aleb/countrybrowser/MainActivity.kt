@@ -2,29 +2,41 @@
 package at.aleb.countrybrowser
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.activity.viewModels
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import at.aleb.countrybrowser.presentation.CountriesViewModel
+import at.aleb.countrybrowser.ui.theme.CountriesScreen
 import at.aleb.countrybrowser.ui.theme.CountryBrowserTheme
+import com.apollographql.apollo3.ApolloClient
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var apolloClient: ApolloClient
+
+    private val viewModel: CountriesViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CountryBrowserTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                CountriesScreen(
+                    viewModel.countries,
+                    { countryCode ->
+                        Log.i("TAG","Clicked $countryCode")
+                    }, {
+                        viewModel.update()
+                    }
+                )
             }
         }
     }

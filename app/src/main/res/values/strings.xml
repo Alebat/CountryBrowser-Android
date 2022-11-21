@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Country Browser</string>
+    <string name="no_items">No items</string>
+    <string name="generic_error">Error, try again later</string>
+    <string name="no_connection">No connection</string>
+    <string name="no_items_found">No items found</string>
+    <string name="success">Success</string>
+    <string name="retry">Retry</string>
 </resources>
