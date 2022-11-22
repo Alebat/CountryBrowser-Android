@@ -5,7 +5,7 @@ import at.aleb.countrybrowser.data.graphql.CountriesQuery
 import at.aleb.countrybrowser.data.myData
 import at.aleb.countrybrowser.data.myErrors
 import at.aleb.countrybrowser.domain.Resource
-import at.aleb.countrybrowser.domain.toEntity
+import at.aleb.countrybrowser.util.Samples
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
@@ -19,22 +19,24 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class CountriesRepositoryTest {
     lateinit var apolloClient: ApolloClient
+    lateinit var apolloResponse: ApolloResponse<CountriesQuery.Data>
+    lateinit var apolloCall: ApolloCall<CountriesQuery.Data>
 
     @Before
     fun before() {
         apolloClient = mockk()
+        apolloResponse = mockk()
+        apolloCall = mockk()
+        every { apolloClient.query<CountriesQuery.Data>(any()) } returns apolloCall
+        coEvery { apolloCall.execute() } returns apolloResponse
+        mockkStatic("at.aleb.countrybrowser.data.ApolloExtensionKt")
     }
 
     @Test
     fun `with ApolloNetworkException returns NOCONNECTION`(): Unit = runBlocking {
-        coEvery { apolloClient.query<CountriesQuery.Data>(any()) } throws ApolloNetworkException()
+        coEvery { apolloCall.execute() } throws ApolloNetworkException()
 
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
@@ -43,15 +45,20 @@ class CountriesRepositoryTest {
     }
 
     @Test
-    fun `with null data returns NOTFOUND`(): Unit = runBlocking {
-        mockkStatic("at.aleb.countrybrowser.data.ApolloExtensionKt")
-
-        val apolloResponse: ApolloResponse<CountriesQuery.Data> = mockk()
-        val apolloCall: ApolloCall<CountriesQuery.Data> = mockk()
-        every { apolloClient.query<CountriesQuery.Data>(any()) } returns apolloCall
-        coEvery { apolloCall.execute() } returns apolloResponse
+    fun `with null data returns ERROR`(): Unit = runBlocking {
         every { apolloResponse.hasErrors() } returns false
         every { apolloResponse.myData } answers { null }
+
+        val repo = CountriesRepository(apolloClient)
+        val result = repo.getCountries()
+
+        assertEquals(Resource.ERROR::class, result::class)
+    }
+
+    @Test
+    fun `with empty list returns NOTFOUND`(): Unit = runBlocking {
+        every { apolloResponse.hasErrors() } returns false
+        every { apolloResponse.myData } answers { CountriesQuery.Data(listOf()) }
 
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
@@ -61,12 +68,6 @@ class CountriesRepositoryTest {
 
     @Test
     fun `with errors returns ERROR`(): Unit = runBlocking {
-        mockkStatic("at.aleb.countrybrowser.data.ApolloExtensionKt")
-
-        val apolloResponse: ApolloResponse<CountriesQuery.Data> = mockk()
-        val apolloCall: ApolloCall<CountriesQuery.Data> = mockk()
-        every { apolloClient.query<CountriesQuery.Data>(any()) } returns apolloCall
-        coEvery { apolloCall.execute() } returns apolloResponse
         every { apolloResponse.hasErrors() } returns true
         every { apolloResponse.myErrors } answers { listOf() }
 
@@ -78,25 +79,13 @@ class CountriesRepositoryTest {
 
     @Test
     fun `with data and no errors returns SUCCESS and data`(): Unit = runBlocking {
-        mockkStatic("at.aleb.countrybrowser.data.ApolloExtensionKt")
-
-        val apolloResponse: ApolloResponse<CountriesQuery.Data> = mockk()
-        val apolloCall: ApolloCall<CountriesQuery.Data> = mockk()
-        every { apolloClient.query<CountriesQuery.Data>(any()) } returns apolloCall
-        coEvery { apolloCall.execute() } returns apolloResponse
         every { apolloResponse.hasErrors() } returns false
-        every { apolloResponse.myData } returns CountriesQuery.Data(listOf(
-            CountriesQuery.Country("IT", "Italy", "Italia", "Rome", "xyz"),
-            CountriesQuery.Country("AT", "Austria", "Österreich", "Wien", "zyx"),
-        ))
+        every { apolloResponse.myData } returns CountriesQuery.Data(Samples.countriesDtoList)
 
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
         assertEquals(Resource.SUCCESS::class, result::class)
-        assertEquals(listOf(
-            CountriesQuery.Country("IT", "Italy", "Italia", "Rome", "xyz"),
-            CountriesQuery.Country("AT", "Austria", "Österreich", "Wien", "zyx"),
-        ).map { it.toEntity() }, (result as Resource.SUCCESS).data)
+        assertEquals(Samples.countriesList, (result as Resource.SUCCESS).data)
     }
 }

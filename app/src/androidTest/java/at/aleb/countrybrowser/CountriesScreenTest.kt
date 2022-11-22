@@ -63,7 +63,7 @@ class CountriesScreenTest {
     }
 
     @Test
-    fun clickCallsonSelect() {
+    fun clickCallsOnSelect() {
         countries.value = Resource.SUCCESS(Samples.countriesList)
 
         composeTestRule.onNodeWithText(Samples.countriesList[1].name).run {
