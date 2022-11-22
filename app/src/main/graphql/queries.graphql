@@ -7,3 +7,21 @@ query Countries {
         emoji
     }
 }
+
+query CountryDetail($code: ID!) {
+    country(code: $code) {
+        code
+        name
+        native
+        capital
+        emoji
+        phone
+        continent {
+            name
+        }
+        languages {
+            name
+            native
+        }
+    }
+}
