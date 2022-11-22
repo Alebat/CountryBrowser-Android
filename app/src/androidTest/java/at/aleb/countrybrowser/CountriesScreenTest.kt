@@ -10,7 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import at.aleb.countrybrowser.domain.Country
 import at.aleb.countrybrowser.domain.Resource
-import at.aleb.countrybrowser.ui.theme.CountriesScreen
+import at.aleb.countrybrowser.ui.CountriesScreen
 import at.aleb.countrybrowser.ui.theme.CountryBrowserTheme
 import at.aleb.countrybrowser.util.Samples
 import io.mockk.*

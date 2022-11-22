@@ -1,4 +1,4 @@
-package at.aleb.countrybrowser.ui.theme
+package at.aleb.countrybrowser.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
