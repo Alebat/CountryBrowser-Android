@@ -50,6 +50,17 @@ android {
     kapt {
         correctErrorTypes true
     }
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging true
+            }
+            resources {
+                excludes += '/META-INF/LICENSE.md'
+                excludes += '/META-INF/LICENSE-notice.md'
+            }
+        }
+    }
 }
 
 apollo {
@@ -73,4 +84,10 @@ dependencies {
     implementation "com.apollographql.apollo3:apollo-runtime:3.7.1"
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation "io.mockk:mockk-android:1.13.2"
+    testImplementation "io.mockk:mockk-agent:1.13.2"
+    androidTestImplementation "io.mockk:mockk-android:1.13.2"
+    androidTestImplementation "io.mockk:mockk-agent:1.13.2"
 }

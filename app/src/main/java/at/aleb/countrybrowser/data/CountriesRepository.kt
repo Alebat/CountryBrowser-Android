@@ -18,9 +18,9 @@ class CountriesRepository @Inject constructor(
                 clazz.newInstance()
             ).execute()
             when {
-                result.hasErrors() -> Resource.ERROR(result.errors.toString())
-                result.data == null -> Resource.NOTFOUND()
-                else -> Resource.SUCCESS(toEntity(result.dataAssertNoErrors))
+                result.hasErrors() -> Resource.ERROR(result.myErrors.toString())
+                result.myData == null -> Resource.NOTFOUND()
+                else -> Resource.SUCCESS(toEntity(result.myData!!))
             }
         } catch (e: ApolloNetworkException) {
             Resource.NOCONNECTION()

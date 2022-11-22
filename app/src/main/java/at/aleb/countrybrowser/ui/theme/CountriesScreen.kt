@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,12 +15,11 @@ import androidx.compose.ui.unit.sp
 import at.aleb.countrybrowser.R
 import at.aleb.countrybrowser.domain.Country
 import at.aleb.countrybrowser.domain.Resource
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun CountriesScreen(
-    countries: StateFlow<Resource<List<Country>>>,
-    onClick: (String) -> Int,
+    countries: State<Resource<List<Country>>>,
+    onSelect: (String) -> Unit,
     onRetry: () -> Unit
 ) {
     Scaffold(
@@ -30,7 +29,7 @@ fun CountriesScreen(
             )
         },
         content = {
-            when (val result = countries.collectAsState().value) {
+            when (val result = countries.value) {
                 is Resource.SUCCESS -> {
                     LazyColumn(
                         Modifier
@@ -47,7 +46,7 @@ fun CountriesScreen(
                             Row(
                                 Modifier
                                     .clickable {
-                                        onClick(it.name)
+                                        onSelect(it.code)
                                     }
                                     .fillMaxWidth()
                                     .padding(8.dp),
@@ -57,7 +56,8 @@ fun CountriesScreen(
                                 Text(it.emoji, Modifier.padding(6.dp), fontSize = 50.sp)
                                 Column {
                                     Text(it.name, style = MaterialTheme.typography.h5)
-                                    Text(it.native, style = MaterialTheme.typography.h6,
+                                    Text(
+                                        it.native, style = MaterialTheme.typography.h6,
                                         color = MaterialTheme.colors.onBackground
                                             .copy(alpha = ContentAlpha.medium)
                                     )

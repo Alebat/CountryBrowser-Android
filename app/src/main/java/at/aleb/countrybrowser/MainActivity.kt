@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import at.aleb.countrybrowser.presentation.CountriesViewModel
 import at.aleb.countrybrowser.ui.theme.CountriesScreen
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CountryBrowserTheme {
                 CountriesScreen(
-                    viewModel.countries,
+                    viewModel.countries.collectAsState(),
                     { countryCode ->
                         Log.i("TAG","Clicked $countryCode")
                     }, {
