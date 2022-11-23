@@ -28,8 +28,8 @@ class CountryDetailsViewModelTest {
     fun before() = runTest {
         repository = mockk()
 
-        coEvery { repository.getDetails("IT") } returns Resource.SUCCESS(Samples.countryDetail)
-        coEvery { repository.getDetails("AT") } returns Resource.NOTFOUND()
+        coEvery { repository.getDetails("IT") } returns Resource.Success(Samples.countryDetail)
+        coEvery { repository.getDetails("AT") } returns Resource.NotFound()
 
         viewModel = CountryDetailsViewModel(repository)
     }
@@ -41,9 +41,9 @@ class CountryDetailsViewModelTest {
         }
 
         runTest {
-            val result = viewModel.countries.value
+            val result = viewModel.details.value
 
-            assertEquals(Resource.SUCCESS(Samples.countryDetail), result)
+            assertEquals(Resource.Success(Samples.countryDetail), result)
 
             coVerify { repository.getDetails("IT") }
         }
@@ -56,9 +56,9 @@ class CountryDetailsViewModelTest {
         }
 
         runTest {
-            val result = viewModel.countries.value
+            val result = viewModel.details.value
 
-            assertEquals(Resource.NOTFOUND::class, result::class)
+            assertEquals(Resource.NotFound::class, result::class)
 
             coVerify { repository.getDetails("AT") }
         }

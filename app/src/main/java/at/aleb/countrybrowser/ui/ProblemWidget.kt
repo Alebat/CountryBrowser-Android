@@ -20,27 +20,27 @@ fun ProblemWidget(resource: Resource<*>, onRetry: () -> Unit, modifier: Modifier
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (resource) {
-            is Resource.EMPTY -> Text(stringResource(R.string.no_items), Modifier.padding(48.dp))
-            is Resource.ERROR -> Text(
+            is Resource.Empty -> Text(stringResource(R.string.no_items), Modifier.padding(48.dp))
+            is Resource.Error -> Text(
                 stringResource(R.string.generic_error),
                 Modifier.padding(48.dp)
             )
-            is Resource.LOADING -> CircularProgressIndicator(Modifier.padding(48.dp))
-            is Resource.NOCONNECTION -> Text(
+            is Resource.Loading -> CircularProgressIndicator(Modifier.padding(48.dp))
+            is Resource.NoConnection -> Text(
                 stringResource(R.string.no_connection),
                 Modifier.padding(48.dp)
             )
-            is Resource.NOTFOUND -> Text(
+            is Resource.NotFound -> Text(
                 stringResource(R.string.no_items_found),
                 Modifier.padding(48.dp)
             )
-            is Resource.SUCCESS -> {
+            is Resource.Success -> {
                 Text(stringResource(R.string.success))
             }
         }
         when (resource) {
-            is Resource.LOADING -> {}
-            is Resource.SUCCESS -> {}
+            is Resource.Loading -> {}
+            is Resource.Success -> {}
             else -> {
                 Button(onClick = onRetry, content = {
                     Text(stringResource(R.string.retry))

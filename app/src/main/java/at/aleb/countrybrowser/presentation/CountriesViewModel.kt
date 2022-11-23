@@ -14,17 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CountriesViewModel @Inject constructor(
     private val repository: CountriesRepository
-): ViewModel() {
+) : ViewModel() {
     fun update() = viewModelScope.launch {
-        _countries.emit(Resource.LOADING())
+        _countries.emit(Resource.Loading())
         _countries.emit(repository.getCountries())
     }
 
-    private val _countries: MutableStateFlow<Resource<List<Country>>> = MutableStateFlow(Resource.EMPTY())
+    private val _countries: MutableStateFlow<Resource<List<Country>>> =
+        MutableStateFlow(Resource.Empty())
 
     val countries = _countries.asStateFlow()
-
-    init {
-        update()
-    }
 }

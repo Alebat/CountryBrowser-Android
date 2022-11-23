@@ -16,12 +16,12 @@ class CountryDetailsViewModel @Inject constructor(
     private val repository: CountryDetailsRepository
 ) : ViewModel() {
     fun update(code: String) = viewModelScope.launch {
-        _countries.emit(Resource.LOADING())
-        _countries.emit(repository.getDetails(code))
+        _details.emit(Resource.Loading())
+        _details.emit(repository.getDetails(code))
     }
 
-    private val _countries: MutableStateFlow<Resource<CountryDetails>> =
-        MutableStateFlow(Resource.EMPTY())
+    private val _details: MutableStateFlow<Resource<CountryDetails>> =
+        MutableStateFlow(Resource.Empty())
 
-    val countries = _countries.asStateFlow()
+    val details = _details.asStateFlow()
 }

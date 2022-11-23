@@ -6,4 +6,8 @@
     <string name="no_items_found">No items found</string>
     <string name="success">Success</string>
     <string name="retry">Retry</string>
+    <string name="country_detail">Country Detail</string>
+    <string name="coat_of_arms">Coat of Arms</string>
+    <string name="unspecified">Unspecified</string>
+    <string name="navigate_back">Navigate Back</string>
 </resources>

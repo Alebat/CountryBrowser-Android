@@ -44,7 +44,7 @@ class CountryDetailsRepositoryTest {
 
         val result = repository.getDetails("IT")
 
-        assertEquals(Resource.ERROR::class, result::class)
+        assertEquals(Resource.Error::class, result::class)
     }
 
     @Test
@@ -53,7 +53,7 @@ class CountryDetailsRepositoryTest {
 
         val result = repository.getDetails("IT")
 
-        assertEquals(Resource.NOTFOUND::class, result::class)
+        assertEquals(Resource.NotFound::class, result::class)
     }
 
     @Test
@@ -63,7 +63,7 @@ class CountryDetailsRepositoryTest {
 
         val result = repository.getDetails("IT")
 
-        assertEquals(Resource.SUCCESS::class, result::class)
-        assertEquals(Samples.countryDetail, (result as Resource.SUCCESS).data)
+        assertEquals(Resource.Success::class, result::class)
+        assertEquals(Samples.countryDetail, (result as Resource.Success).data)
     }
 }

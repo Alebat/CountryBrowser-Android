@@ -25,11 +25,11 @@ suspend fun <D : Query.Data, Q : Query<D>, R> ApolloClient.manageQuery(
         val result = this.query(query).execute()
         val data = result.myData
         if (result.hasErrors() || data == null)
-            Resource.ERROR(result.myErrors.toString())
+            Resource.Error(result.myErrors.toString())
         else when (val entity = toEntity(data)) {
-            null -> Resource.NOTFOUND()
-            else -> Resource.SUCCESS(entity)
+            null -> Resource.NotFound()
+            else -> Resource.Success(entity)
         }
     } catch (e: ApolloNetworkException) {
-        Resource.NOCONNECTION()
+        Resource.NoConnection()
     }

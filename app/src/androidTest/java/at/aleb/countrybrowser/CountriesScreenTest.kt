@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import at.aleb.countrybrowser.domain.Country
 import at.aleb.countrybrowser.domain.Resource
+import at.aleb.countrybrowser.framework.MainActivity
 import at.aleb.countrybrowser.ui.CountriesScreen
 import at.aleb.countrybrowser.ui.theme.CountryBrowserTheme
 import at.aleb.countrybrowser.util.Samples
@@ -35,7 +36,7 @@ class CountriesScreenTest {
 
     @Before
     fun before() = runTest {
-        countries = mutableStateOf(Resource.EMPTY())
+        countries = mutableStateOf(Resource.Empty())
 
         onSelect = mockk()
         onRetry = mockk()
@@ -52,7 +53,7 @@ class CountriesScreenTest {
 
     @Test
     fun retryCallsOnRetry() {
-        countries.value = Resource.NOCONNECTION()
+        countries.value = Resource.NoConnection()
 
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.retry)).run {
             assertIsDisplayed()
@@ -64,7 +65,7 @@ class CountriesScreenTest {
 
     @Test
     fun clickCallsOnSelect() {
-        countries.value = Resource.SUCCESS(Samples.countriesList)
+        countries.value = Resource.Success(Samples.countriesList)
 
         composeTestRule.onNodeWithText(Samples.countriesList[1].name).run {
             assertIsDisplayed()

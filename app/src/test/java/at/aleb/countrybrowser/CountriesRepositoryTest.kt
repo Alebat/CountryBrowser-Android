@@ -41,7 +41,7 @@ class CountriesRepositoryTest {
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
-        assert(result is Resource.NOCONNECTION)
+        assert(result is Resource.NoConnection)
     }
 
     @Test
@@ -52,7 +52,7 @@ class CountriesRepositoryTest {
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
-        assertEquals(Resource.ERROR::class, result::class)
+        assertEquals(Resource.Error::class, result::class)
     }
 
     @Test
@@ -63,7 +63,7 @@ class CountriesRepositoryTest {
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
-        assertEquals(Resource.NOTFOUND::class, result::class)
+        assertEquals(Resource.NotFound::class, result::class)
     }
 
     @Test
@@ -74,7 +74,7 @@ class CountriesRepositoryTest {
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
-        assertEquals(Resource.ERROR::class, result::class)
+        assertEquals(Resource.Error::class, result::class)
     }
 
     @Test
@@ -85,7 +85,7 @@ class CountriesRepositoryTest {
         val repo = CountriesRepository(apolloClient)
         val result = repo.getCountries()
 
-        assertEquals(Resource.SUCCESS::class, result::class)
-        assertEquals(Samples.countriesList, (result as Resource.SUCCESS).data)
+        assertEquals(Resource.Success::class, result::class)
+        assertEquals(Samples.countriesList, (result as Resource.Success).data)
     }
 }
