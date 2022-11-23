@@ -1,5 +1,7 @@
 package at.aleb.countrybrowser.framework
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             CountryBrowserTheme {
                 window.navigationBarColor = MaterialTheme.colors.background.toArgb()
-                NavGraph()
+                NavGraph { url ->
+                    startActivity(Intent(Intent.ACTION_VIEW).also {
+                        it.data = Uri.parse(url)
+                    })
+                }
             }
         }
     }

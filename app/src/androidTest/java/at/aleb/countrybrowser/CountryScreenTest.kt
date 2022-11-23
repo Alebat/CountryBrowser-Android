@@ -44,7 +44,7 @@ class CountryScreenTest {
 
         composeTestRule.activity.setContent {
             CountryBrowserTheme {
-                CountryDetailsScreen(detail = country, onBack = onBack, onRetry = onRetry)
+                CountryDetailsScreen(detail = country, onBack = onBack, onRetry = onRetry, onClick = {})
             }
         }
     }

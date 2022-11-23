@@ -12,7 +12,9 @@ import at.aleb.countrybrowser.presentation.CountriesViewModel
 import at.aleb.countrybrowser.presentation.CountryDetailsViewModel
 
 @Composable
-fun NavGraph() {
+fun NavGraph(
+    onClickUrl: (String) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -40,6 +42,7 @@ fun NavGraph() {
             update()
             CountryDetailsScreen(
                 viewModel.details.collectAsState(),
+                onClickUrl,
                 navController::navigateUp,
                 update
             )

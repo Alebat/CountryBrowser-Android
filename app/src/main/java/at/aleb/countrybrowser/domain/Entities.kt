@@ -29,5 +29,6 @@ data class Language(
 data class DetailDescription(
     val text: String,
     val emoji: String,
-    val description: String
+    val description: String,
+    val url: String? = null
 )

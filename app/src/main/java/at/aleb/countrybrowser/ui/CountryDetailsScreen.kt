@@ -23,6 +23,7 @@ import coil.request.ImageRequest
 @Composable
 fun CountryDetailsScreen(
     detail: State<Resource<CountryDetails>>,
+    onClick: (String) -> Unit,
     onBack: () -> Unit,
     onRetry: () -> Unit,
     columns: Int = 2
@@ -61,12 +62,14 @@ fun CountryDetailsScreen(
 
             data.getDetailDescriptions().chunked(columns).forEach {
                 Row(
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     it.forEach {
                         DetailCard(
                             Modifier.weight(1f),
-                            detail = it
+                            detail = it,
+                            onClick
                         )
                     }
                     repeat(columns - it.size) {
